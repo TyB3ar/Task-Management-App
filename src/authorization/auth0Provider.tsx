@@ -3,7 +3,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 
 type Auth0ProviderWithNavigateProps = {
-    children: any; 
+    children: React.ReactNode; 
 }; 
 
 const Auth0ProviderWithNavigate: React.FC<Auth0ProviderWithNavigateProps> = ({
