@@ -1,16 +1,18 @@
-import React from 'react'; 
+import React, { useState } from 'react'; 
 import { useAuth0 } from '@auth0/auth0-react';
-import type { Task } from '../types/Task'; 
+import type { Task, TaskFormData } from '../types/Task'; 
+import TaskModal from './CreateTask';
 
 interface DashboardProps {
     tasks: Task[];
     onDelete: (id: string) => void; 
     onEdit: (task: Task) => void;
-    onCreate: () => void; 
+    onCreate: (task: TaskFormData) => void; 
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ tasks, onDelete, onEdit, onCreate }) => {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  const [isModalOpen, setModalOpen] = useState(false); 
 
   if (!isAuthenticated) {
     return (
@@ -24,7 +26,7 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, onDelete, onEdit, onCreate
   return (
     <div>
         <h1>Welcome, {user?.name}!</h1>
-        <button onClick={onCreate}>➕ New Task</button>
+        <button onClick={() => setModalOpen(true)}>➕ New Task</button>
         <ul>
             {tasks.map(task => (
                 <li key={task.id}>
@@ -34,7 +36,18 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, onDelete, onEdit, onCreate
                 </li>
             ))}
         </ul>
-        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>Logout</button>
+        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+            Logout
+        </button>
+
+        <TaskModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={(formData) => {
+          onCreate(formData);
+          setModalOpen(false);
+        }}
+      />
     </div>
   );
 };
