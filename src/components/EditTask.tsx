@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect } from 'react'; 
 import type { Task } from '../types/Task'; 
 
 
@@ -14,6 +14,16 @@ const EditTask: React.FC<EditTaskProps> = ({ isOpen, onClose, task, onSubmit }) 
     const [completed, setCompleted] = useState(task.completed)
     const [error, setError] = useState<string | null>(null)
 
+    // Adding effect to update task info for editing 
+    useEffect(() => {
+        if (isOpen) {
+            setTaskName(task.name);
+            setCompleted(task.completed);
+            setError(null); 
+        }
+    }, [isOpen, task]); 
+
+    // handle submit button, on submit update Task information, TaskName can't be empty
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if(taskName.trim() === '') {
@@ -29,28 +39,33 @@ const EditTask: React.FC<EditTaskProps> = ({ isOpen, onClose, task, onSubmit }) 
 
     return (
         <div className="modal">
-            <form onSubmit={handleSubmit} className="modal-content">
+            <form onSubmit={handleSubmit} className="modal-content p-4">
                 <h2>Edit Task</h2>
-                <label>
-                    Title:
-                    <input
-                    type="text"
-                    value={taskName}
-                    onChange={(e) => setTaskName(e.target.value)}
-                    required
-                    />
-                </label>
-                <label>
-                    Completed:
-                    <input
-                    type="checkbox"
-                    checked={completed}
-                    onChange={(e) => setCompleted(e.target.checked)}
-                    />
-                </label>
+                <div>
+                    <label>
+                      Title:  
+                      <input
+                      type="text"
+                      value={taskName}
+                      onChange={(e) => setTaskName(e.target.value)}
+                      required
+                      />
+                    </label> 
+                </div>
+                <div>
+                    <label>
+                      Completed:
+                      <input
+                      type="checkbox"
+                      checked={completed}
+                      onChange={(e) => setCompleted(e.target.checked)}
+                      />
+                    </label>
+                </div>
+                
                 {error && <p className="error">{error}</p>}
-                <button type="submit">Save Changes</button>
-                <button type="button" onClick={onClose}>Cancel</button>
+                <button type="submit" className='login-btn'>Save Changes</button>
+                <button type="button" className='danger' onClick={onClose}>Cancel</button>
             </form>
         </div>
     );

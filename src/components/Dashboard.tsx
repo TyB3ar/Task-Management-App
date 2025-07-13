@@ -13,7 +13,7 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ tasks, onDelete, onEdit, onCreate }) => {
-  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, user } = useAuth0();
   const [isModalOpen, setModalOpen] = useState(false); 
   const [isEditOpen, setEditOpen] = useState(false); 
   const [taskToEdit, setTaskToEdit] = useState<Task | null>(null); 
@@ -30,13 +30,13 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, onDelete, onEdit, onCreate
   }
 
   return (
-    <div>
+    <div className='dashboard'>
         <h1>Welcome, {user?.name}!</h1>
-        <button onClick={() => setModalOpen(true)}>➕ New Task</button>
+        <button className='new-task-button login-btn' onClick={() => setModalOpen(true)}>➕ New Task</button>
         <ul>
             {tasks.map(task => (
                 <li key={task.id}>
-                    <strong>{task.name}</strong> - {task.completed ? '✅ Done' : '❌ Not done'}
+                    <strong>{task.name}</strong> {task.completed ? '✅ Done' : '❌ Not done'}
                     <button onClick={() => {
                       setTaskToEdit(task)
                       setEditOpen(true)
@@ -48,9 +48,7 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, onDelete, onEdit, onCreate
                 </li>
             ))}
         </ul>
-        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
-            Logout
-        </button>
+        
 
         <TaskModal
         isOpen={isModalOpen}
