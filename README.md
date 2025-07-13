@@ -84,7 +84,7 @@ Make sure you have the following installed:
 
 ```bash
 git clone https://github.com/TyB3ar/Task-Management-App
-cd task-management
+cd Task-Management-App
 ```
 
 2. **Install Dependencies**
@@ -93,7 +93,18 @@ cd task-management
 npm install  
 ```
 
-3. **Start the Development Server**
+# Create a .env file in the root of the project with the following:
+
+3. **Configure Environment Variables**
+
+```bash
+VITE_AUTH0_DOMAIN=your-auth0-domain
+VITE_AUTH0_CLIENT_ID=your-auth0-client-id
+VITE_AUTH0_CALLBACK_URL=http://localhost:5173
+```
+Replace the values with credentials from your Auth0 dashboard. 
+
+4. **Start the Development Server**
 
 ```bash
 npm run dev
